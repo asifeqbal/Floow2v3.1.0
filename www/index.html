@@ -71,51 +71,58 @@
 
 		window.addEventListener("message", receiveMessage, false);
 
+		function getPosition() {
+			var options = {
+				enableHighAccuracy: true,
+				maximumAge: 3600000
+			}
+
+			var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+		}
 		
-	/*	function getLanguage() {
-				   navigator.globalization.getPreferredLanguage(onSuccess, onError);
+		function onSuccess(position) {
+			if(flag){
+				if(notificationFlag){						
+				
+			
+					document.getElementById('container-frame').src = 'https://app.roootsj.com/index.php?lat='+position.coords.latitude+'&lon='+position.coords.longitude+'&devType=Android&deviceId='+deviceId;
+				}
+				else{
+					document.getElementById('container-frame').src = 'https://app.roootsj.com/index.php?lat='+position.coords.latitude+'&lon='+position.coords.longitude;
+				}
+				flag = false;
+			}
+		}
 
-				   function onSuccess(language) {
-					  alert('language: ' + language.value + '\n');
-					 // alert('deviceid: ' + deviceId + '\n');
-						var lang = language.value;
-						var res = lang.split("-");
-						if(res[0] == 'nl'){
-							//document.getElementById('container-frame').src = 'http://www.floow2.com/floow2-nl-mobiel.html';
-						}
-						else{
-							document.getElementById('container-frame').src = 'http://www.floow2.com/fl2-en-mobile.html';
-						}
-					}
-
-				   function onError(){
-						 if(flag){
-								if(notificationFlag){
-									document.getElementById('container-frame').src = 'http://www.floow2.com/floow2-nl-mobiel.html;
-								}
-								else{
-									document.getElementById('container-frame').src = 'http://www.floow2.com/floow2-nl-mobiel.html';
-								}
-								flag = false;
-							}
-					   }
-					
-				} */
+		function onError(error) {
+			if(flag){
+				if(notificationFlag){
+					document.getElementById('container-frame').src = 'https://app.roootsj.com/index.php?devType=Android&deviceId='+deviceId;
+				}
+				else{
+					document.getElementById('container-frame').src = 'https://app.roootsj.com';
+				}
+				flag = false;
+			}
+		}
+		
 
 		function onDeviceReady(){
-		alert('hi');
-			var push = PushNotification.init({ "android": {"senderID": "992772188333"},
+		alert('baal');
+			document.addEventListener("resume", onResume, false);
+			
+			var push = PushNotification.init({ "android": {"senderID": "114063791200"},
 			"ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {} } );
 
 			push.on('registration', function(data) {
-			//	deviceId = data.registrationId;
-				alert(data.registrationId);
-			//	getLanguage();			
+				deviceId = data.registrationId;
+			//	alert('id:' +  deviceId );	
+				getPosition();				
 			}); 
 			
 			push.on('error', function(e) {
 				notificationFlag = false;
-			//	getLanguage();
+				getPosition();
 			}); 
 
 			push.on('notification', function(data) {
@@ -139,7 +146,11 @@
 				doWhenOnline();
 			} 
 		}
-
+		
+		function onResume() {
+			// Handle the resume event			
+			getPosition();
+		}
 		function doWhenOnline(){
 			document.getElementById('offline-screen').style.display = 'none';
 		}
