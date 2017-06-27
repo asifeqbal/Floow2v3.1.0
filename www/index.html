@@ -48,80 +48,15 @@
     <script type="text/javascript" src="js/index.js"></script>   
     <script type="text/javascript">
 		// Initialize local vars
-		var deviceId;
-		var flag = true;
-		var notificationFlag = true;
+		
 		
 		document.getElementById('offline-screen').style.height = document.body.clientHeight+'px';
-		document.addEventListener("deviceready",onDeviceReady,false);
-	
-		function loaded(){
-			document.getElementById('blanker').style.display = 'none';
-		}
-		var receiveMessage = function receiveMessage(e){
-			switch (e.data) {
-				case 'setBlanker':
-					document.getElementById('blanker').style.display = 'block';
-					break;
-				case 'removeBlanker':
-					document.getElementById('blanker').style.display = 'none'; 
-					break;
-			}
-		};			
-
-		window.addEventListener("message", receiveMessage, false);		
-		
+		document.addEventListener("deviceready",onDeviceReady,false);		
 
 		function onDeviceReady(){
 		alert('Baal');
-			document.addEventListener("resume", onResume, false);
 			
-			var push = PushNotification.init({ "android": {"senderID": "114063791200"},
-			"ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {} } );
-
-			push.on('registration', function(data) {
-				deviceId = data.registrationId;
-			//	alert('id:' +  deviceId );	
-								
-			}); 
-			
-			push.on('error', function(e) {
-				notificationFlag = false;
-				
-			}); 
-
-			push.on('notification', function(data) {
-				navigator.notification.alert(
-                    data.message,         // message
-                    null,                 // callback
-                    data.title,           // title
-                    'Ok'                  // buttonName
-				);			
-			});
-			
-			// Blanker on change
-			document.addEventListener("online", doWhenOnline, false);
-			document.addEventListener("offline", doWhenOffline, false);
-			var networkState = navigator.connection.type;
-
-			if(networkState == Connection.NONE) {
-				doWhenOffline();
-			}
-			else{
-				doWhenOnline();
-			} 
-		}
-		
-		function onResume() {
-			// Handle the resume event			
-			
-		}
-		function doWhenOnline(){
-			document.getElementById('offline-screen').style.display = 'none';
-		}
-		function doWhenOffline(){				
-			document.getElementById('offline-screen').style.display = 'block';
-		}
+		}		
     </script>
 	
 </body>
