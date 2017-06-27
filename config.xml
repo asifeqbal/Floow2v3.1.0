@@ -8,6 +8,28 @@
         FLOOW2 Team
     </author>
     <content src="index.html" />
+	<preference name="DisallowOverscroll" value="true"/> 
+	<preference name="fullscreen" value="false" />
+	<preference name="SplashScreen" value="splash"/>
+	<preference name="SplashScreenDelay" value = "4000" />
+	<preference name="ShowSplashScreenSpinner" value="false" />
+	<preference name="orientation" value="portrait" />
+    <preference name="target-device" value="universal" />   
+    <preference name="webviewbounce" value="true" />
+    <preference name="prerendered-icon" value="true" />
+    <preference name="stay-in-webview" value="true" />
+    <preference name="ios-statusbarstyle" value="black-opaque" />
+    <preference name="detect-data-types" value="true" />
+    <preference name="exit-on-suspend" value="false" />
+    <preference name="show-splash-screen-spinner" value="true" />
+    <preference name="auto-hide-splash-screen" value="true" />
+    <preference name="disable-cursor" value="false" />
+    <preference name="android-minSdkVersion" value="14" />
+    <preference name="android-installLocation" value="auto" />
+	<uses-permission name="android.permission.INTERNET" />
+	<uses-permission name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission name="android.permission.ACCESS_WIFI_STATE" />
+	
 	<plugin name="phonegap-plugin-push" source="npm" spec="~2.0.0-rc5">
         <variable name="SENDER_ID" value="114063791200" />
     </plugin>
