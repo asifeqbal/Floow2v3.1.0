@@ -47,116 +47,15 @@
 	<script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/index.js"></script>   
     <script type="text/javascript">
-		// Initialize local vars
-		var deviceId;
-		var flag = true;
-		var notificationFlag = true;
-		
-		document.getElementById('offline-screen').style.height = document.body.clientHeight+'px';
-		document.addEventListener("deviceready",onDeviceReady,false);
 	
-		function loaded(){
-			document.getElementById('blanker').style.display = 'none';
-		}
-		var receiveMessage = function receiveMessage(e){
-			switch (e.data) {
-				case 'setBlanker':
-					document.getElementById('blanker').style.display = 'block';
-					break;
-				case 'removeBlanker':
-					document.getElementById('blanker').style.display = 'none'; 
-					break;
-			}
-		};			
-
-		window.addEventListener("message", receiveMessage, false);
-
-		function getPosition() {
-			var options = {
-				enableHighAccuracy: true,
-				maximumAge: 3600000
-			}
-
-			var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
-		}
-		
-		function onSuccess(position) {
-			if(flag){
-				if(notificationFlag){						
-				
-			
-					document.getElementById('container-frame').src = 'https://app.roootsj.com/index.php?lat='+position.coords.latitude+'&lon='+position.coords.longitude+'&devType=Android&deviceId='+deviceId;
-				}
-				else{
-					document.getElementById('container-frame').src = 'https://app.roootsj.com/index.php?lat='+position.coords.latitude+'&lon='+position.coords.longitude;
-				}
-				flag = false;
-			}
-		}
-
-		function onError(error) {
-			if(flag){
-				if(notificationFlag){
-					document.getElementById('container-frame').src = 'https://app.roootsj.com/index.php?devType=Android&deviceId='+deviceId;
-				}
-				else{
-					document.getElementById('container-frame').src = 'https://app.roootsj.com';
-				}
-				flag = false;
-			}
-		}
-		
+		document.getElementById('offline-screen').style.height = document.body.clientHeight+'px';
+		document.addEventListener("deviceready",onDeviceReady,false);		
 
 		function onDeviceReady(){
-		alert('baal');
-			document.addEventListener("resume", onResume, false);
+		alert('baal');			
 			
-			var push = PushNotification.init({ "android": {"senderID": "114063791200"},
-			"ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {} } );
-
-			push.on('registration', function(data) {
-				deviceId = data.registrationId;
-			//	alert('id:' +  deviceId );	
-				getPosition();				
-			}); 
-			
-			push.on('error', function(e) {
-				notificationFlag = false;
-				getPosition();
-			}); 
-
-			push.on('notification', function(data) {
-				navigator.notification.alert(
-                    data.message,         // message
-                    null,                 // callback
-                    data.title,           // title
-                    'Ok'                  // buttonName
-				);			
-			});
-			
-			// Blanker on change
-			document.addEventListener("online", doWhenOnline, false);
-			document.addEventListener("offline", doWhenOffline, false);
-			var networkState = navigator.connection.type;
-
-			if(networkState == Connection.NONE) {
-				doWhenOffline();
-			}
-			else{
-				doWhenOnline();
-			} 
-		}
+		}		
 		
-		function onResume() {
-			// Handle the resume event			
-			getPosition();
-		}
-		function doWhenOnline(){
-			document.getElementById('offline-screen').style.display = 'none';
-		}
-		function doWhenOffline(){				
-			document.getElementById('offline-screen').style.display = 'block';
-		}
     </script>
 	
 </body>
